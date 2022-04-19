@@ -1,0 +1,1 @@
+git clone https://github.com/akashhegde2012/test.git /home/akash/Documents/Remoteserver/uploads/name
