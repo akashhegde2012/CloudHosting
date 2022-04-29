@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Containers</title>
+</head>
+<body>
+    <div>
+        <% containers.forEach(function(container){%>
+            <div class="col-md-3 col-sm-6">
+                <div >
+                    <div class="caption">
+                        <h4><%= container.container_name %></h4>
+                    </div>
+                    <p>
+                        <a href="/containers/<%=container._id%>" class="btn btn-primary" >view</a>
+                    </p>
+                </div>
+                
+            </div>
+            
+        <%})%>
+    </div>
+</body>
+</html>
