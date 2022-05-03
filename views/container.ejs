@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Container</title>
-</head>
-<body>
+<%- include("partials/header") %>
+
     <div>
         <h1><%=container.container_name%></h1>
         <a href="<%=container.github_link%>">Github link</a>
+        <div>port <%=container.port%></div>
         <form action="/containers/<%=container._id%>?_method=PUT" method="POST">
             <input type="submit" value="update">
         </form>
+        <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
+            <input type="submit" value="delete">
+        </form>
     </div>
-</body>
-</html>
+<%- include("partials/footer") %>

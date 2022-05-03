@@ -13,7 +13,8 @@ const express =require('express'),
         methodOverride = require('method-override'),
         flash = require('connect-flash'),
         User=require('./models/user'),
-        Container = require('./models/container');
+        Container = require('./models/container'),
+        middlewareObj = require('./middleware/index');
 
 var upload=multer({dest:'uploads/'});
 app.set('view engine', 'ejs');
@@ -44,7 +45,7 @@ app.use(function(req,res,next){
 });
 
 app.get('/',(req,res)=>{
-    res.send('<h1>Welcome<h1>');
+    res.render('index');
 })
 //============
 //Aut routes
@@ -87,52 +88,22 @@ app.get('/logout',function(req,res){
     res.redirect('/');
 });
 // middlwware
-app.get('/containers',async (req,res)=>{
+app.get('/containers', middlewareObj.isLoggedIn,async (req,res)=>{
     console.log(req.user);
     Container.find({'owner.id':req.user._id}, (err,containers)=>{
         console.log(containers);
         res.render('containers',{containers:containers});
     });
 });
-app.get('/containers/:id', async (req,res)=>{
-    Container.findById(req.params.id, (err,container)=>{
-        res.render('container',{container:container});
-    });
-});
-app.put('/containers/:id', async (req,res)=>{
-    // console.log(req.param.id);
-    Container.findById(req.params.id, async (err,container)=>{
-        console.log(container);
-        var url = container.github_link;
-        const path ='/home/akash/uploads/';
-        await shell.exec('docker stop '+container.container_name);
-        await shell.exec('docker rm '+container.container_name);
-        await shell.exec('docker rmi '+container.image_name);
-        a = url.split('/');
-        b = a[a.length - 1].split('.')[0]
-        var newpath=path+b;
-        await shell.cd(newpath);
-        await shell.exec('git pull '+url);
-        var image_id = await shell.exec('docker build -t '+container.image_name+' .');
-        var resp = await shell.exec('docker run --name '+container.container_name+' -p 4000:4000 -d '+container.image_name);
-        console.log('container = ' +resp);
-        container.container_id = resp.stdout;
-        container.save();
-        res.redirect('/containers/'+container._id);
-
-    })
-    
-})
-app.get('/containers/new',(req,res)=>{
+app.get('/containers/new', middlewareObj.isLoggedIn,(req,res)=>{
     console.log(req.user);
     res.render('form');
 });
-
-
-app.post('/containers/new',async (req,res)=>{
+app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
     var url = req.body.git_url;
     var name=req.body.name;
     var image_name = req.user.username+'/'+name;
+    var port = Math.floor(3001 + Math.random() * 9000);
     const path ='/home/akash/uploads/';
     await shell.cd(path)
     // var content = 'git clone '+url+' /home/akash/Documents/Remoteserver/uploads/'+name;
@@ -143,13 +114,14 @@ app.post('/containers/new',async (req,res)=>{
     await shell.cp('-r','/home/akash/Documents/RemoteServer/Dockerfile',newpath);
     await shell.cd(newpath);
     var image_id = await shell.exec('docker build -t '+image_name+' .');
-    var resp = await shell.exec('docker run --name '+name+' -p 4000:4000 -d '+image_name);
+    var resp = await shell.exec('docker run --name '+name+' -p '+port+':4000 -d '+image_name);
     console.log('container = ' +resp);
     var newContainer = {
         github_link:url,
         container_name:name,
         container_id:''+resp,
         image_name:image_name,
+        port: port,
         // image_id:image_id.stdout,
         owner:{
             id:req.user._id,
@@ -173,27 +145,65 @@ app.post('/containers/new',async (req,res)=>{
     // await console.log(newContainer);
     
 });
-
-app.get('/update',(req,res)=>{
-    res.render('update');
-})
-app.post('/update', async (req,res)=>{
-    var url = req.body.git_url;
-    const path ='/home/akash/uploads/';
-    await shell.exec('docker stop '+resp);
-    await shell.exec('docker rm '+resp);
-    await shell.exec('docker rmi akashhegde2012/test_app:latest');
-    a = url.split('/');
-    b = a[a.length - 1].split('.')[0]
-    var newpath=path+b;
-    await shell.cd(newpath);
-    await shell.exec('git pull '+url);
-    // await shell.cd(newpath);
-    await shell.exec('docker build -t akashhegde2012/test_app .');
-    resp = await shell.exec('docker run --name test_app -p 4000:4000 -d akashhegde2012/test_app');
-    console.log('container = ' +resp);
-    await res.send('done');
+app.get('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
+    Container.findById(req.params.id, (err,container)=>{
+        res.render('container',{container:container});
+    });
 });
+app.put('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
+    // console.log(req.param.id);
+    Container.findById(req.params.id, async (err,container)=>{
+        console.log(container);
+        var url = container.github_link;
+        const path ='/home/akash/uploads/';
+        await shell.exec('docker stop '+container.container_name);
+        await shell.exec('docker rm '+container.container_name);
+        await shell.exec('docker rmi '+container.image_name);
+        a = url.split('/');
+        b = a[a.length - 1].split('.')[0]
+        var newpath=path+b;
+        await shell.cd(newpath);
+        await shell.exec('git pull '+url);
+        var image_id = await shell.exec('docker build -t '+container.image_name+' .');
+        var resp = await shell.exec('docker run --name '+container.container_name+' -p '+container.port+':4000 -d '+container.image_name);
+        console.log('container = ' +resp);
+        container.container_id = resp.stdout;
+        container.save();
+        res.redirect('/containers/'+container._id);
+
+    })
+    
+});
+app.delete('/containers/:id',middlewareObj.isLoggedIn, async (req,res)=>{
+    // console.log(req.param.id);
+    Container.findByIdAndDelete(req.params.id, async (err,container)=>{
+        console.log(container);
+        var url = container.github_link;
+        const path ='/home/akash/uploads/';
+        await shell.exec('docker stop '+container.container_name);
+        await shell.exec('docker rm '+container.container_name);
+        await shell.exec('docker rmi '+container.image_name);
+        a = url.split('/');
+        b = a[a.length - 1].split('.')[0]
+        var newpath=path+b;
+        await shell.exec('rm -rf '+newpath);
+        
+        User.findById(req.user._id,(err,user)=>{
+            var index = user.containers.indexOf(container._id);
+            user.containers.splice(index,1);
+            user.save()
+            console.log(user);
+            res.redirect('/containers');
+        })
+    });
+    
+    
+});
+
+
+
+
+
 app.listen(3000,(req,res)=>{
     console.log('running on 3000');
 });
