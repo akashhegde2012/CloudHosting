@@ -1,8 +1,11 @@
+require('dotenv').config();
 const multer = require('multer');
 const decompress = require('decompress');
 const { fork, spawn } = require('child_process');
 const shell = require('shelljs');
 const path = require('path');
+const PORT = process.env.PORT;
+const USER = process.env.USER;
 const express =require('express'),
         app = express();
         bodyParser=require('body-parser'),
@@ -104,17 +107,26 @@ app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
     var name=req.body.name;
     var image_name = req.user.username+'/'+name;
     var port = Math.floor(3001 + Math.random() * 9000);
-    const path ='/home/akash/uploads/';
+    var env = req.body.env.split('\r\n');
+    console.log(env);
+    var build_args = ''
+    env.forEach(arg=>{
+        build_args = build_args + ' --build-arg '+arg;
+    });
+    console.log('docker build'+build_args+' -t '+image_name+' .')
+    const path =`/home/${USER}/uploads/`;
     await shell.cd(path)
     // var content = 'git clone '+url+' /home/akash/Documents/Remoteserver/uploads/'+name;
     await shell.exec('git clone '+url);
+    
     a = url.split('/');
     b = a[a.length - 1].split('.')[0]
     var newpath=path+b;
-    await shell.cp('-r','/home/akash/Documents/RemoteServer/Dockerfile',newpath);
+    await shell.cp('-r',`/home/${USER}/Documents/RemoteServer/Dockerfile`,newpath);
     await shell.cd(newpath);
-    var image_id = await shell.exec('docker build -t '+image_name+' .');
-    var resp = await shell.exec('docker run --name '+name+' -p '+port+':4000 -d '+image_name);
+    
+    var image_id = await shell.exec('docker build --build-arg '+env+' -t '+image_name+' .');
+    var resp = await shell.exec('docker run --name '+name+' -p '+port+':8080 -d '+image_name);
     console.log('container = ' +resp);
     var newContainer = {
         github_link:url,
@@ -155,7 +167,7 @@ app.put('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
     Container.findById(req.params.id, async (err,container)=>{
         console.log(container);
         var url = container.github_link;
-        const path ='/home/akash/uploads/';
+        const path =`/home/${USER}/uploads/`;
         await shell.exec('docker stop '+container.container_name);
         await shell.exec('docker rm '+container.container_name);
         await shell.exec('docker rmi '+container.image_name);
@@ -165,7 +177,7 @@ app.put('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
         await shell.cd(newpath);
         await shell.exec('git pull '+url);
         var image_id = await shell.exec('docker build -t '+container.image_name+' .');
-        var resp = await shell.exec('docker run --name '+container.container_name+' -p '+container.port+':4000 -d '+container.image_name);
+        var resp = await shell.exec('docker run --name '+container.container_name+' -p '+container.port+':8080 -d '+container.image_name);
         console.log('container = ' +resp);
         container.container_id = resp.stdout;
         container.save();
@@ -199,11 +211,6 @@ app.delete('/containers/:id',middlewareObj.isLoggedIn, async (req,res)=>{
     
     
 });
-
-
-
-
-
-app.listen(3000,(req,res)=>{
-    console.log('running on 3000');
+app.listen(PORT,(req,res)=>{
+    console.log('running on '+PORT);
 });
