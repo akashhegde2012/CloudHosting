@@ -48,14 +48,14 @@ app.use(function(req,res,next){
 });
 
 app.get('/',(req,res)=>{
-    res.render('index');
+    res.render('welcome');
 })
 //============
 //Aut routes
 //++++++++++++
-app.get('/register',function(req,res){
-    res.render('register');
-});
+// app.get('/register',function(req,res){
+//     res.render('register');
+// });
 // handell sign up 
 app.post('/register',function(req,res){
     var newUser= new User({username:req.body.username});
@@ -73,16 +73,17 @@ app.post('/register',function(req,res){
 });
 //show login form
 app.get('/login',function(req,res){
-    res.render('login');
+    res.render('login2');
 });
 //app.post('/login',middleware,callback function);
 app.post('/login', passport.authenticate('local',
 {
+    
     successRedirect:'/containers',
     failureRedirect:'/'
 }
 ),function(req,res){
-
+    console.log('login')
 });
 //logout
 app.get('/logout',function(req,res){
