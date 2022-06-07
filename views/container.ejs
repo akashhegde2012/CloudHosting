@@ -1,4 +1,3 @@
-<%- include("partials/header") %>
 
     <div>
         <h1><%=container.container_name%></h1>
@@ -10,5 +9,18 @@
         <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
             <input type="submit" value="delete">
         </form>
+        <button onclick="logsHandler()">View Logs</button>
+        <div id="logs"></div>
     </div>
-<%- include("partials/footer") %>
+<script>
+    var logsHandler = async()=>{
+              var logs = await fetch("http://localhost:3000/containers/<%=container._id%>/logs");
+              var data = await logs.json();
+              // console.log(data)
+              var place = document.getElementById('logs');
+              // console.log(filter.category_name +"inside the table")
+
+              var out = data;
+              place.innerHTML=out;
+            }
+</script>
