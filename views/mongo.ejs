@@ -1,8 +1,46 @@
-<form action="/containers/mongo" method="post" >
+<!-- <form action="/containers/mongo" method="post" >
     mongo image creation <br>
     App name: <input type="text" name="name" id="n" placeholder="enter app name"><br>
 
     <input type="submit" value="submit">
 
 </form>
-<%- include("partials/footer") %>
+<%- include("partials/footer") %> -->
+
+<%- include("partials/header") %>
+
+
+	<body>
+
+		<div class="wrapper">
+			<div class="inner">
+				<form action="/containers/mongo" method="post" >
+					<h3>Mongo Image Creation</h3>
+					<p>Please fill in the details</p>
+					<!-- <label class="form-group">
+						<input type="text" class="form-control"  required>
+						<span>Link</span>
+						<span class="border"></span>
+					</label> -->
+					<label class="form-group">
+						<input type="text" class="form-control" name="name" id="n" required>
+						<span for="">App Name</span>
+						<span class="border"></span>
+					</label>
+                    <!-- <label class="form-group">
+						<input type="text" class="form-control" name="mysql_container" id="" required>
+						<span for="">MySQL Container Name</span>
+						<span class="border"></span>
+					</label> -->
+					
+					<button type="submit" value="submit"> Submit 
+						<i class="zmdi zmdi-arrow-right"></i>
+					</button>
+				</form>
+			</div>
+		</div>
+		
+	</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+
+< %- include("partials/footer") %>
