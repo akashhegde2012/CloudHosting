@@ -1,15 +1,29 @@
 
-    <!-- <form action="/" method="post" enctype="multipart/form-data">
-        file:
-        <input type="file" name="upload" id="">
-        <input type="text" name="name" id="n" placeholder="enter app name">
-        <input type="submit" value="submit">
-    </form> -->
-    <form action="/containers/new" method="post" >
-        Link: <input type="text" name="git_url" id=""><br>
-        App name: <input type="text" name="name" id="n" placeholder="enter app name"><br>
-        enter content of .env file <textarea name="env" id="" cols="30" rows="10"></textarea>
-        <input type="submit" value="submit">
+<%- include("partials/header2") %>
 
+<div class="container contact-form" style="border-radius: 30px;">
+    <div class="contact-image">
+        <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
+    </div>
+    <form action="/containers/new" method="post">
+        <h3>Details Please!!</h3>
+       <div class="row">
+            <div class="col-md-6" style="width:800px; margin:0 auto;">
+                <div class="form-group" style="padding-bottom: 15px;">
+                    <input type="text" name="git_url" class="form-control" placeholder="Link" value="" />
+                </div>
+                <div class="form-group" style="padding-bottom: 15px;">
+                    <input type="text" name="name" class="form-control" placeholder="App Name" value="" />
+                </div>
+                <div class="form-group" style="padding-bottom: 15px;">
+                    <textarea name="env" id="" cols="30" rows="10" class="form-control" placeholder="Contents of .env file"></textarea>
+                </div>
+                <div class="form-group" style="width:800px; margin:0 auto;">
+                    <input type="submit" name="btnSubmit" class="btnContact" value="SUBMIT" />
+                </div>
+            </div>
+            
+        </div>
     </form>
+</div>
 <%- include("partials/footer") %>

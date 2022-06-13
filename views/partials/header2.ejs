@@ -24,7 +24,10 @@
 
   <!-- Template Main CSS File -->
   <link href="/stylesheets/css/style.css" rel="stylesheet">
-  
+  <link href="/stylesheets/css/sty.css" rel="stylesheet">
+  <link href="/stylesheets/css/containers.css" rel="stylesheet">
+  <link href="/stylesheets/css/con.css" rel="stylesheet">
+
   <!--Welcome stylesheets -->
 
   <!--Login stylesheets-->
@@ -33,44 +36,43 @@
 
 <link href="/stylesheets/css/loginstyle.css" rel="stylesheet">
 <link href="/stylesheets/css/php11.css" rel="stylesheet">
+<link href="/stylesheets/css/styleheader2.css" rel="stylesheet">
 
 
 </div>
 </head>
 <body>
   <!-- Navbar code -->
-<header id="header" class="fixed-top" style="position: absolute;">
-  <div class="container d-flex align-items-center justify-content-between">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-scroll fixed-top shadow-0 border-bottom border-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#!"><i class="fab fa-mdb fa-4x"></i></a>
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#!">Our Story</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#!">Membership</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#!">Write</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#!">Sign In</a>
+          </li>
+          <button type="button" class="btn btn-dark ms-3">Get Started</button>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar -->
   
-    <h1 class="logo"><a href="index.html">RIT</a></h1>
-    <!-- Uncomment below if you prefer to use an image logo -->
-    <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-  
-    <nav id="navbar" class="navbar">
-      <ul>
-        <li><a class="nav-link scrollto active" href="/">Home</a></li>
-        <li><a class="nav-link scrollto" href="/#main">About</a></li>
-        <li><a class="nav-link scrollto" href="/#team">Team</a></li>
-        <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-          <ul>
-            <li><a href="#">Drop Down 1</a></li>
-            <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-              <ul>
-                <li><a href="#">Deep Drop Down 1</a></li>
-                <li><a href="#">Deep Drop Down 2</a></li>
-                <li><a href="#">Deep Drop Down 3</a></li>
-                <li><a href="#">Deep Drop Down 4</a></li>
-                <li><a href="#">Deep Drop Down 5</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Drop Down 2</a></li>
-            <li><a href="#">Drop Down 3</a></li>
-            <li><a href="#">Drop Down 4</a></li>
-          </ul>
-        </li>
-        <li><a class="getstarted scrollto" href="/login">Login</a></li>
-      </ul>
-      <i class="bi bi-list mobile-nav-toggle"></i>
-    </nav><!-- .navbar -->
-  </header>  
-    
+  <div class="d-flex align-items-center justify-content-center text-center" style="height: 50px;">
+    <p class="h3">Scroll down to see the effect of change the navbar background-color</p>
+  </div>

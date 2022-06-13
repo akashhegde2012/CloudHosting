@@ -12,11 +12,12 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-body {
+/* body {
   font-family: "Montserrat-Regular";
   color: #fff;
   font-size: 15px;
-  margin: 0; }
+  margin: 0; 
+} */
 
 input, textarea, select, button {
   font-family: "Montserrat-Regular";
@@ -43,7 +44,7 @@ a:hover {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: url("../../img/bg-registration-form-7.jpg") no-repeat;
+  background: url("../../img/bg-registration-form-7.jpg");
   background-size: cover; }
 
 .inner {

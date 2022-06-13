@@ -1,26 +1,50 @@
 
-    <div>
-        <h1><%=container.container_name%></h1>
-        <a href="<%=container.github_link%>">Github link</a>
-        <div>port <%=container.port%></div>
-        <form action="/containers/<%=container._id%>?_method=PUT" method="POST">
-            <input type="submit" value="update">
-        </form>
-        <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
-            <input type="submit" value="delete">
-        </form>
-        <button onclick="logsHandler()">View Logs</button>
-        <div id="logs"></div>
-    </div>
-<script>
-    var logsHandler = async()=>{
-              var logs = await fetch("http://localhost:3000/containers/<%=container._id%>/logs");
-              var data = await logs.json();
-              // console.log(data)
-              var place = document.getElementById('logs');
-              // console.log(filter.category_name +"inside the table")
+<%- include("partials/header2") %>
 
-              var out = data;
-              place.innerHTML=out;
-            }
-</script>
+    <section class="section gradient-banner">
+        
+        <div class="container" style="padding-top:150px;">
+            <div class="row align-items-center">
+                <div class="col-md-6 order-2 order-md-1 text-center text-md-left">
+                    <h1 class="text-white font-weight-bold mb-4"><%=container.container_name%></h1>
+                    
+                    <h3><a href="<%=container.github_link%>">Github Link</a></h3>
+                    <strong><div>PORT <%=container.port%></strong></div>
+                    <br>
+
+                    <div class=''>
+                        <div class='child'>
+                            <form action="/containers/<%=container._id%>?_method=PUT" method="POST" >
+                                <input type="submit" value="update" class="btn btn-main-md"> 
+                            </form>
+                        </div>
+                        <div class='child'>
+                            <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
+                                <input type="submit" value="delete" class="btn btn-main-md">
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-6 text-center order-1 order-md-2">
+                    <img class="img-fluid" src="https://bootstrapmade.com/demo/templates/Arsha/assets/img/hero-img.png" alt="screenshot" style="width: 800px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        var logsHandler = async()=>{
+                  var logs = await fetch("http://localhost:3000/containers/<%=container._id%>/logs");
+                  var data = await logs.json();
+                  // console.log(data)
+                  var place = document.getElementById('logs');
+                  // console.log(filter.category_name +"inside the table")
+    
+                  var out = data;
+                  place.innerHTML=out;
+                }
+    </script>
+
+<%- include("partials/footer") %>
