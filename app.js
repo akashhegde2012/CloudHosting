@@ -68,7 +68,7 @@ app.post('/register',function(req,res){
         }
         passport.authenticate('local')(req, res, function(){
             req.flash('success','Welcome to YelpCamp '+user.username);
-            res.redirect('/containers');
+            res.redirect('/home');
         });
     });
 });
@@ -121,6 +121,7 @@ app.post('/containers/mongo',async(req,res)=>{
     var port = Math.floor(27017+Math.random()*1000);
     var image_name = 'mongo';
     var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':27017 -d '+image_name);
+    console.log(resp);
     var newContainer = {
         container_name:name,
         container_id:''+resp,
@@ -152,6 +153,7 @@ app.post('/containers/mysql', async (req,res)=>{
     var port = Math.floor(3307 + Math.random() * 9000);
     var image_name='mysql:5'
     var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':3306 -e MYSQL_ROOT_PASSWORD=root -d '+image_name);
+    console.log(resp);
     var newContainer = {
         container_name:name,
         container_id:''+resp,
@@ -185,6 +187,7 @@ app.post('/containers/php', async (req,res)=>{
     var port = Math.floor(3000 + Math.random() * 9000);
     var image_name='phpmyadmin'
     var resp = await shell.exec('docker run --name '+name+' --network newnet --link '+mysql_container+':db -p '+port+':80  -d '+image_name);
+    console.log(resp);
     var newContainer = {
         container_name:name,
         container_id:''+resp,
@@ -222,7 +225,8 @@ app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
     env.forEach(arg=>{
         build_args = build_args + ' --build-arg '+arg;
     });
-    console.log('docker build'+build_args+' -t '+image_name+' .')
+    const appPort = env[0].split('=')[1];
+    console.log(build_args + " *************************************");
     const path =`/home/${USER}/uploads/`;
     await shell.cd(path)
     // var content = 'git clone '+url+' /home/akash/Documents/Remoteserver/uploads/'+name;
@@ -234,9 +238,9 @@ app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
     await shell.cp('-r',`/home/${USER}/Documents/RemoteServer/Dockerfile`,newpath);
     await shell.cd(newpath);
     
-    // var image_id = await shell.exec('docker build --build-arg '+env+' -t '+image_name+' .');
-    var image_id = await shell.exec('docker build -t '+image_name+' .');
-    var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':8080 -d '+image_name);
+    var image_id = await shell.exec('docker build --build-arg '+env+' -t '+image_name+' .');
+    // var image_id = await shell.exec('docker build -t '+image_name+' .');
+    var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':'+appPort+' -d '+image_name);
     console.log('container = ' +resp);
     var newContainer = {
         github_link:url,
@@ -269,7 +273,7 @@ app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
 });
 app.get('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
     Container.findById(req.params.id, (err,container)=>{
-        res.render('container',{container:container});
+        res.render('container',{container:container,ip:ip.address()});
     });
 });
 //getting logs from the containers
@@ -288,7 +292,6 @@ app.put('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
         const path =`/home/${USER}/uploads/`;
         await shell.exec('docker stop '+container.container_name);
         await shell.exec('docker rm '+container.container_name);
-        await shell.exec('docker rmi '+container.image_name);
         a = url.split('/');
         b = a[a.length - 1].split('.')[0]
         var newpath=path+b;
@@ -308,7 +311,7 @@ app.delete('/containers/:id',middlewareObj.isLoggedIn, async (req,res)=>{
     // console.log(req.param.id);
     Container.findByIdAndDelete(req.params.id, async (err,container)=>{
         console.log(container + "for deletion *********");
-        const path ='/home/akash/uploads/';
+        const path =`/home/${USER}/uploads/`;
         await shell.exec('docker stop '+container.container_name);
         await shell.exec('docker rm '+container.container_name);
         if (container.github_link){

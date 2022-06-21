@@ -33,46 +33,68 @@
   <!--Login stylesheets-->
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
 <link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'><link rel="stylesheet" href="./style.css">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap" rel="stylesheet">
 <link href="/stylesheets/css/loginstyle.css" rel="stylesheet">
 <link href="/stylesheets/css/php11.css" rel="stylesheet">
 <link href="/stylesheets/css/styleheader2.css" rel="stylesheet">
 
 
-</div>
+
+    <style>
+        body {
+            /* font-family: Arial, Helvetica, sans-serif!important; */
+            font-family: 'Poppins',cursive!important;
+            font-size: 1em;
+        }
+        nav{  
+            font-family: 'Poppins',cursive!important;
+            font-size: 1.2em;
+        }
+        
+    </style>
+    <style>
+       
+    </style>
 </head>
 <body>
-  <!-- Navbar code -->
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-scroll fixed-top shadow-0 border-bottom border-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#!"><i class="fab fa-mdb fa-4x"></i></a>
-      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#!">Our Story</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#!">Membership</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#!">Write</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#!">Sign In</a>
-          </li>
-          <button type="button" class="btn btn-dark ms-3">Get Started</button>
-        </ul>
-      </div>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Application Hosting Platform</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
+                <div class="navbar-nav">
+                </div>
+                <div class="navbar-nav ml-auto" style="position: fixed; right: 2%">
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if(!currentUser){%>
+                        <li><a class="m-2" href="/login" style="color: white;">Login/Register</a></li>
+                        <!-- <li><a class="m-2" href="/register"  style="color: white;">Sign up</a></li> -->
+                        <% }else{ %>
+                        <li><a class="m-2" href="/home">Home</a></li>
+                        <li><a class="m-2" href="/containers">Containers</a></li>
+                        <li><a class="m-2" href="#"  style="color: white;"><%=currentUser.username%></a></li>
+                        <li><a class="m-2" href="/logout" style="color: white;">Logout</a></li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<div class="container">
+    <!-- <% if(error && error.length>0){%>
+    <div class="alert alert-danger" role="alert">
+        <%= error %>
     </div>
-  </nav>
-  <!-- Navbar -->
-  
-  <div class="d-flex align-items-center justify-content-center text-center" style="height: 50px;">
-    <p class="h3">Scroll down to see the effect of change the navbar background-color</p>
-  </div>
+    <% } %>
+    <% if(success && success.length>0){%>
+    <div class="alert alert-success" role="alert">
+        <%= success %>
+    </div>
+    <% } %> -->
+</div>

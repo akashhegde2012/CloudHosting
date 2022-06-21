@@ -6,22 +6,37 @@
         <div class="container" style="padding-top:150px;">
             <div class="row align-items-center">
                 <div class="col-md-6 order-2 order-md-1 text-center text-md-left">
-                    <h1 class="text-white font-weight-bold mb-4"><%=container.container_name%></h1>
+                    <h1 class=" font-weight-bold mb-4">Container: <%=container.container_name%></h1>
                     
-                    <h3><a href="<%=container.github_link%>">Github Link</a></h3>
-                    <strong><div>PORT <%=container.port%></strong></div>
+                    <% if(container.github_link){%>
+                        <h5><a href="<%=container.github_link%>">Github Link</a></h5>
+                    <%}%>
+                        <% if(container.github_link || container.image_name === 'phpmyadmin'){%>
+                            <strong>
+                                <div>Link: <a href="http://<%=ip%>:<%=container.port%>" target="_blank" rel="noopener noreferrer">Click here</a></strong></div>
+                        <%} else {%>
+                            <strong>
+                                <div>Port: <a href="#" target="_blank" rel="noopener noreferrer"><%=container.port%></a></strong></div>
+                                <%} %>      
                     <br>
-
                     <div class=''>
-                        <div class='child'>
-                            <form action="/containers/<%=container._id%>?_method=PUT" method="POST" >
-                                <input type="submit" value="update" class="btn btn-main-md"> 
-                            </form>
-                        </div>
+                        <% if(container.github_link){%>
+                            <div class='child'>
+                                <form action="/containers/<%=container._id%>?_method=PUT" method="POST" >
+                                    <input type="submit" value="update" class="btn btn-main-md"> 
+                                </form>
+                            </div>
+                        <%}%>
                         <div class='child'>
                             <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
                                 <input type="submit" value="delete" class="btn btn-main-md">
                             </form>
+                        </div>
+                        <br>
+                        <div class='child'>
+                            <div>
+                                <button class="btn btn-main-md" onclick="logsHandler()" >View Logs</button>
+                            </div>
                         </div>
                     </div>
 
@@ -31,6 +46,11 @@
                     <img class="img-fluid" src="https://bootstrapmade.com/demo/templates/Arsha/assets/img/hero-img.png" alt="screenshot" style="width: 800px;">
                 </div>
             </div>
+            <div class="row">
+                <div id="logs" class="col col-12">
+
+                </div>
+            </div>
         </div>
     </section>
 
@@ -38,7 +58,7 @@
         var logsHandler = async()=>{
                   var logs = await fetch("http://localhost:3000/containers/<%=container._id%>/logs");
                   var data = await logs.json();
-                  // console.log(data)
+                  console.log(data)
                   var place = document.getElementById('logs');
                   // console.log(filter.category_name +"inside the table")
     

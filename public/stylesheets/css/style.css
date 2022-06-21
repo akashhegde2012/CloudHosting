@@ -345,26 +345,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------------------------------------------------
-# Hero Section
+# Hero2 Section
 --------------------------------------------------------------*/
-#hero {
+#hero2 {
   width: 100%;
   height: 100vh;
-  background: url("/img/hero-bg.jpg") top center;
+  background: url("../../img/hero-bg.jpg");
   background-size: cover;
   position: relative;
   padding: 0;
 }
-#hero:before {
+#hero2:before {
   content: "";
-  background: rgba(13, 20, 26, 0.7);
+  background: #00000088;
   position: absolute;
   bottom: 0;
   top: 0;
   left: 0;
   right: 0;
 }
-#hero .hero-container {
+#hero2 .hero-container {
   position: absolute;
   bottom: 0;
   top: 0;
@@ -376,7 +376,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   text-align: center;
 }
-#hero h1 {
+#hero2 h1 {
   margin: 0 0 10px 0;
   font-size: 48px;
   font-weight: 700;
@@ -384,12 +384,12 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   color: #fff;
 }
-#hero h2 {
+#hero2 h2 {
   color: #eee;
   margin-bottom: 50px;
   font-size: 24px;
 }
-#hero .btn-get-started {
+#hero2 .btn-get-started {
   font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
@@ -402,11 +402,11 @@ h1, h2, h3, h4, h5, h6 {
   background: #ff4a17;
   border: 2px solid #ff4a17;
 }
-#hero .btn-get-started:hover {
+#hero2 .btn-get-started:hover {
   border-color: #fff;
   background: rgba(255, 255, 255, 0.1);
 }
-#hero .btn-watch-video {
+#hero2 .btn-watch-video {
   font-size: 16px;
   display: inline-block;
   transition: 0.5s;
@@ -416,28 +416,28 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
 }
-#hero .btn-watch-video i {
+#hero2 .btn-watch-video i {
   line-height: 0;
   color: #fff;
   font-size: 32px;
   transition: 0.3s;
   margin-right: 8px;
 }
-#hero .btn-watch-video:hover i {
+#hero2 .btn-watch-video:hover i {
   color: #ff4a17;
 }
 
 @media (min-width: 1024px) {
-  #hero {
+  #hero2 {
     background-attachment: fixed;
   }
 }
 @media (max-width: 768px) {
-  #hero h1 {
+  #hero2 h1 {
     font-size: 28px;
     line-height: 36px;
   }
-  #hero h2 {
+  #hero2 h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
