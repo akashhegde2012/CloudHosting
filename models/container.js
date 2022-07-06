@@ -8,6 +8,7 @@ var containerSchema =new mongoose.Schema({
     container_id:String,
     image_name:String,
     port:Number,
+    deployed_url: String,
     // image_id:String,
     owner :{
         id:{

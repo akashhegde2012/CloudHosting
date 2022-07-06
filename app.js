@@ -237,37 +237,37 @@ app.post('/containers/new', middlewareObj.isLoggedIn,async (req,res)=>{
     var newpath=path+b;
     await shell.cp('-r',`/home/${USER}/Documents/RemoteServer/Dockerfile`,newpath);
     await shell.cd(newpath);
-    
-    var image_id = await shell.exec('docker build --build-arg '+env+' -t '+image_name+' .');
-    // var image_id = await shell.exec('docker build -t '+image_name+' .');
-    var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':'+appPort+' -d '+image_name);
-    console.log('container = ' +resp);
+    var link = await shell.exec('heroku create');
+    console.log("*LLLLLLLLLLll "+link)
+    await shell.exec('heroku container:push web');
+    await shell.exec('heroku container:release web');
+    // var image_id = await shell.exec('docker build --build-arg '+env+' -t '+image_name+' .');
+    // // var image_id = await shell.exec('docker build -t '+image_name+' .');
+    // var resp = await shell.exec('docker run --name '+name+' --network newnet -p '+port+':'+appPort+' -d '+image_name);
     var newContainer = {
         github_link:url,
         container_name:name,
-        container_id:''+resp,
+        container_id:'id',
         image_name:image_name,
-        port: port,
+        deployed_url: link.split("|")[0],
         // image_id:image_id.stdout,
         owner:{
             id:req.user._id,
             username:req.user.username
         }
     }
-    User.findById(req.user._id,(err,user)=>{
-        if(err){
-            console.log(err);
-        }
-        else{
-            Container.create(newContainer, (err,container)=>{
+    console.log(newContainer);
+    var user = req.user;
+            await Container.create(newContainer, (err,container)=>{
+                if(err){
+                    console.log(err);
+                }
                 console.log(container);
                 user.containers.push(container._id);
                 user.save();
                 console.log(user);
                 res.redirect('/containers');
             });
-        }
-    })
     // await console.log(newContainer);
     
 });
@@ -292,6 +292,7 @@ app.put('/containers/:id', middlewareObj.isLoggedIn, async (req,res)=>{
         const path =`/home/${USER}/uploads/`;
         await shell.exec('docker stop '+container.container_name);
         await shell.exec('docker rm '+container.container_name);
+        await shell.exec('docker rmi '+container.image_name);
         a = url.split('/');
         b = a[a.length - 1].split('.')[0]
         var newpath=path+b;
@@ -335,5 +336,6 @@ app.delete('/containers/:id',middlewareObj.isLoggedIn, async (req,res)=>{
     
 });
 app.listen(PORT,(req,res)=>{
+    shell.exec('heroku whoami')
     console.log('running on '+PORT);
 });

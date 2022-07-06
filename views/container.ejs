@@ -13,10 +13,10 @@
                     <%}%>
                         <% if(container.github_link || container.image_name === 'phpmyadmin'){%>
                             <strong>
-                                <div>Link: <a href="http://<%=ip%>:<%=container.port%>" target="_blank" rel="noopener noreferrer">Click here</a></strong></div>
+                                <div>Link: <a href="<%=container.deployed_url%>" target="_blank" rel="noopener noreferrer"><%=container.deployed_url%></a></strong></div>
                         <%} else {%>
                             <strong>
-                                <div>Port: <a href="#" target="_blank" rel="noopener noreferrer"><%=container.port%></a></strong></div>
+                                <div>Port: <a href="#" target="_blank" rel="noopener noreferrer">172.19.0.1:<%=container.port%></a></strong></div>
                                 <%} %>      
                     <br>
                     <div class=''>
@@ -26,7 +26,7 @@
                                     <input type="submit" value="update" class="btn btn-main-md"> 
                                 </form>
                             </div>
-                        <%}%>
+                        <%} else {%>
                         <div class='child'>
                             <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
                                 <input type="submit" value="delete" class="btn btn-main-md">
@@ -38,6 +38,7 @@
                                 <button class="btn btn-main-md" onclick="logsHandler()" >View Logs</button>
                             </div>
                         </div>
+                        <%}%>
                     </div>
 
 
