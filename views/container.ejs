@@ -11,22 +11,33 @@
                     <% if(container.github_link){%>
                         <h5><a href="<%=container.github_link%>">Github Link</a></h5>
                     <%}%>
-                        <% if(container.github_link || container.image_name === 'phpmyadmin'){%>
+                        <% if(container.deployed_url || container.image_name === 'phpmyadmin'){%>
                             <strong>
                                 <div>Link: <a href="<%=container.deployed_url%>" target="_blank" rel="noopener noreferrer"><%=container.deployed_url%></a></strong></div>
+                                <div class='child'>
+                                    <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
+                                        <input type="submit" value="delete" class="btn btn-main-md">
+                                    </form>
+                                </div>
+                        <%} else  if(container.github_link){%>
+                            <strong>
+                                <div>Link: <a href="http://<%=ip%>:<%=container.port%>" target="_blank" rel="noopener noreferrer"><%=container.port%></a></strong></div>
                         <%} else {%>
                             <strong>
                                 <div>Port: <a href="#" target="_blank" rel="noopener noreferrer">172.19.0.1:<%=container.port%></a></strong></div>
+                                
                                 <%} %>      
                     <br>
                     <div class=''>
-                        <% if(container.github_link){%>
+                        <% if(container.deployed_url){%>
+                            <div> The application is hosted successfully on heroku please click on the link to view the application</div>
+                            
+                        <%} else {%>
                             <div class='child'>
                                 <form action="/containers/<%=container._id%>?_method=PUT" method="POST" >
                                     <input type="submit" value="update" class="btn btn-main-md"> 
                                 </form>
                             </div>
-                        <%} else {%>
                         <div class='child'>
                             <form action="/containers/<%=container._id%>?_method=DELETE" method="POST">
                                 <input type="submit" value="delete" class="btn btn-main-md">
